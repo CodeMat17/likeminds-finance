@@ -26,8 +26,12 @@ export function LevyManager({ adminId }: { adminId: Id<"members"> }) {
     api.levy.getForYear,
     currentYear !== null ? { year: currentYear } : "skip"
   );
+  const [amounts, setAmounts] = useState<Record<string, string>>({});
 
   if (!years || !members) return <Skeleton className="h-64 w-full" />;
+
+  const minAmount =
+    years.find((y) => y.year === currentYear)?.minAmount ?? 50000;
 
   return (
     <div className="space-y-4">
@@ -68,33 +72,54 @@ export function LevyManager({ adminId }: { adminId: Id<"members"> }) {
         {members.map((member) => {
           const record = (levy ?? []).find((l) => l.memberId === member._id);
           const paid = record?.paid ?? false;
+          const amountValue =
+            amounts[member._id] ?? String(record?.amount ?? minAmount);
 
           return (
             <div
               key={member._id}
-              className="flex items-center justify-between rounded-xl border bg-card p-3"
+              className="flex items-center justify-between gap-2 rounded-xl border bg-card p-3"
             >
               <p className="font-medium">{member.name}</p>
-              <Button
-                size="sm"
-                variant={paid ? "default" : "outline"}
-                className={cn(!paid && "text-destructive")}
-                onClick={async () => {
-                  if (currentYear === null) return;
-                  await setPaid({
-                    memberId: member._id,
-                    year: currentYear,
-                    paid: !paid,
-                    amount: paid ? undefined : 50000,
-                    adminId,
-                  });
-                  toast.success(
-                    `${member.name} marked ${!paid ? "paid" : "unpaid"} for ${currentYear} levy.`
-                  );
-                }}
-              >
-                {paid ? "Paid" : "Mark Paid"}
-              </Button>
+              <div className="flex items-center gap-2">
+                {!paid && (
+                  <Input
+                    type="number"
+                    min={minAmount}
+                    value={amountValue}
+                    onChange={(e) =>
+                      setAmounts((prev) => ({
+                        ...prev,
+                        [member._id]: e.target.value,
+                      }))
+                    }
+                    className="w-28"
+                  />
+                )}
+                <Button
+                  size="sm"
+                  variant={paid ? "default" : "outline"}
+                  className={cn(!paid && "text-destructive")}
+                  onClick={async () => {
+                    if (currentYear === null) return;
+                    const amount = paid
+                      ? undefined
+                      : Number(amountValue) || minAmount;
+                    await setPaid({
+                      memberId: member._id,
+                      year: currentYear,
+                      paid: !paid,
+                      amount,
+                      adminId,
+                    });
+                    toast.success(
+                      `${member.name} marked ${!paid ? "paid" : "unpaid"} for ${currentYear} levy.`
+                    );
+                  }}
+                >
+                  {paid ? "Paid" : "Mark Paid"}
+                </Button>
+              </div>
             </div>
           );
         })}

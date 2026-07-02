@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/opengraph-image.jpg",
+        url: "/opengraph-image-v2.jpg",
         width: 1200,
         height: 630,
         alt: "LikeMinds Age Grade 80-86 logo",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/opengraph-image.jpg"],
+    images: ["/opengraph-image-v2.jpg"],
   },
 };
 
