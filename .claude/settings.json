@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx shadcn@latest add tabs skeleton alert-dialog badge separator label select)",
+      "Bash(curl -s -o /tmp/home.html -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Read(//tmp/**)",
+      "Bash(tasklist //FI \"IMAGENAME eq node.exe\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/ --max-time 2)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/members)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/dashboard)",
+      "Bash(npx tsc *)",
+      "Bash(npx shadcn@latest add calendar popover --yes)",
+      "Bash(npx eslint *)",
+      "Bash(cd \"C:\\\\Users\\\\USER\\\\Documents\\\\projects\\\\nfvcb-cooperative-new\" && cat package.json | grep -i pwa; echo \"---\"; find . -iname \"*manifest*\" -not -path \"*/node_modules/*\" -not -path \"*/.next/*\"; echo \"---sw---\"; find . -iname \"*service-worker*\" -o -iname \"sw.js\" -o -iname \"workbox*\" 2>/dev/null | grep -v node_modules | grep -v .next; echo \"---next config---\"; find . -maxdepth 1 -iname \"next.config*\")",
+      "Read(//c/Users/USER/Documents/projects/nfvcb-cooperative-new/**)",
+      "Bash(cd \"C:\\\\Users\\\\USER\\\\Documents\\\\projects\\\\nfvcb-cooperative-new\" && echo \"=NEXTCONFIG=\" && cat next.config.ts && echo \"=MANIFEST=\" && cat public/manifest.webmanifest && echo \"=PKG=\" && grep -i -E \"pwa|workbox|serwist\" package.json)",
+      "Bash(find public/icons -type f)",
+      "Bash(node -e \"const s=require\\('sharp'\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(grep -n '\"build\"\\\\|\"dev\"' \"c:/Users/USER/Documents/projects/nfvcb-cooperative-new/package.json\")",
+      "Bash(rm -rf \"c:/Users/USER/Documents/projects/likeminds-finance/.next\" \"c:/Users/USER/Documents/projects/likeminds-finance/public/sw.js\" \"c:/Users/USER/Documents/projects/likeminds-finance/public/sw.js.map\" \"c:/Users/USER/Documents/projects/likeminds-finance/public\"/swe-worker-*.js \"c:/Users/USER/Documents/projects/likeminds-finance/public\"/swe-worker-*.js.map 2>&1)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\USER\\Documents\\projects\\likeminds-finance\\public"
+    ]
+  }
+}
