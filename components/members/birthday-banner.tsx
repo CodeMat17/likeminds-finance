@@ -7,7 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { isBirthdayToday } from "@/lib/date";
 
 export function BirthdayBanner() {
-  const members = useQuery(api.members.list);
+  const members = useQuery(api.members.listActive);
   const celebrants = (members ?? []).filter((m) => isBirthdayToday(m.dob));
 
   return (

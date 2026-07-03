@@ -3,7 +3,7 @@
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { PlusIcon } from "lucide-react";
+import { Loader2Icon, PlusIcon } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ export function LevyManager({ adminId }: { adminId: Id<"members"> }) {
 
   const [year, setYear] = useState<number | null>(null);
   const [newYear, setNewYear] = useState("");
+  const [pendingId, setPendingId] = useState<Id<"members"> | null>(null);
 
   const currentYear = year ?? years?.[0]?.year ?? null;
   const levy = useQuery(
@@ -100,24 +101,36 @@ export function LevyManager({ adminId }: { adminId: Id<"members"> }) {
                   size="sm"
                   variant={paid ? "default" : "outline"}
                   className={cn(!paid && "text-destructive")}
+                  disabled={pendingId === member._id}
                   onClick={async () => {
                     if (currentYear === null) return;
                     const amount = paid
                       ? undefined
                       : Number(amountValue) || minAmount;
-                    await setPaid({
-                      memberId: member._id,
-                      year: currentYear,
-                      paid: !paid,
-                      amount,
-                      adminId,
-                    });
-                    toast.success(
-                      `${member.name} marked ${!paid ? "paid" : "unpaid"} for ${currentYear} levy.`
-                    );
+                    setPendingId(member._id);
+                    try {
+                      await setPaid({
+                        memberId: member._id,
+                        year: currentYear,
+                        paid: !paid,
+                        amount,
+                        adminId,
+                      });
+                      toast.success(
+                        `${member.name} marked ${!paid ? "paid" : "unpaid"} for ${currentYear} levy.`
+                      );
+                    } finally {
+                      setPendingId(null);
+                    }
                   }}
                 >
-                  {paid ? "Paid" : "Mark Paid"}
+                  {pendingId === member._id ? (
+                    <Loader2Icon className="size-4 animate-spin" />
+                  ) : paid ? (
+                    "Paid"
+                  ) : (
+                    "Mark Paid"
+                  )}
                 </Button>
               </div>
             </div>

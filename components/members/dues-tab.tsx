@@ -47,7 +47,7 @@ function getDueStatus(
 
 export function DuesTab() {
   const years = useQuery(api.dues.listYears);
-  const members = useQuery(api.members.list);
+  const members = useQuery(api.members.listActive);
   const [year, setYear] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [activeMember, setActiveMember] = useState<Doc<"members"> | null>(null);
@@ -97,10 +97,10 @@ export function DuesTab() {
         {filteredMembers.map((member, i) => {
           const memberDues = (dues ?? []).filter((d) => d.memberId === member._id);
           const paidMonths = memberDues.filter((d) => d.paid).length;
-          const { dueMonths, unpaidMonths } =
+          const { unpaidMonths } =
             currentYear !== null
               ? getDueStatus(member, currentYear, memberDues)
-              : { dueMonths: 0, unpaidMonths: 0 };
+              : { unpaidMonths: 0 };
           const isBehind = unpaidMonths > 0;
 
           return (
@@ -118,7 +118,7 @@ export function DuesTab() {
               <div>
                 <p className="font-medium">{member.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  {Math.min(paidMonths, dueMonths)}/{dueMonths} months paid
+                  {paidMonths}/12 months paid
                 </p>
               </div>
               <Badge variant={isBehind ? "destructive" : "default"}>

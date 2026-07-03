@@ -18,7 +18,9 @@
       "Bash(node -e \"const s=require\\('sharp'\\)\")",
       "Bash(node -e ' *)",
       "Bash(grep -n '\"build\"\\\\|\"dev\"' \"c:/Users/USER/Documents/projects/nfvcb-cooperative-new/package.json\")",
-      "Bash(rm -rf \"c:/Users/USER/Documents/projects/likeminds-finance/.next\" \"c:/Users/USER/Documents/projects/likeminds-finance/public/sw.js\" \"c:/Users/USER/Documents/projects/likeminds-finance/public/sw.js.map\" \"c:/Users/USER/Documents/projects/likeminds-finance/public\"/swe-worker-*.js \"c:/Users/USER/Documents/projects/likeminds-finance/public\"/swe-worker-*.js.map 2>&1)"
+      "Bash(rm -rf \"c:/Users/USER/Documents/projects/likeminds-finance/.next\" \"c:/Users/USER/Documents/projects/likeminds-finance/public/sw.js\" \"c:/Users/USER/Documents/projects/likeminds-finance/public/sw.js.map\" \"c:/Users/USER/Documents/projects/likeminds-finance/public\"/swe-worker-*.js \"c:/Users/USER/Documents/projects/likeminds-finance/public\"/swe-worker-*.js.map 2>&1)",
+      "Bash(npm run *)",
+      "Bash(cat /tmp_dev.log)"
     ],
     "additionalDirectories": [
       "c:\\Users\\USER\\Documents\\projects\\likeminds-finance\\public"

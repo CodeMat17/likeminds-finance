@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 export function LevyTab() {
   const years = useQuery(api.levy.listYears);
-  const members = useQuery(api.members.list);
+  const members = useQuery(api.members.listActive);
   const [year, setYear] = useState<number | null>(null);
   const [search, setSearch] = useState("");
 

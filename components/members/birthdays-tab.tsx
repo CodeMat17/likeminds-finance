@@ -22,7 +22,7 @@ const STATE_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
 };
 
 export function BirthdaysTab() {
-  const members = useQuery(api.members.list);
+  const members = useQuery(api.members.listActive);
 
   if (!members) {
     return (

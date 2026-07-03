@@ -10,6 +10,7 @@ export default defineSchema({
     phone: v.optional(v.string()),
     umunna: v.string(),
     role: v.union(v.literal("member"), v.literal("admin")),
+    banned: v.optional(v.boolean()),
   }).index("by_pin", ["pin"]),
 
   duesYears: defineTable({

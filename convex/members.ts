@@ -25,6 +25,16 @@ export const list = query({
   },
 });
 
+export const listActive = query({
+  args: {},
+  handler: async (ctx) => {
+    const members = await ctx.db.query("members").collect();
+    return members
+      .filter((m) => !m.banned)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  },
+});
+
 export const listPins = query({
   args: {},
   handler: async (ctx) => {
@@ -89,6 +99,21 @@ export const update = mutation({
       action: "update_member",
       target: data.name,
       details: `Updated member ${data.name}`,
+      date: new Date().toISOString(),
+    });
+  },
+});
+
+export const setBanned = mutation({
+  args: { id: v.id("members"), banned: v.boolean(), adminId: v.id("members") },
+  handler: async (ctx, { id, banned, adminId }) => {
+    await ctx.db.patch(id, { banned });
+    const member = await ctx.db.get(id);
+    await ctx.db.insert("auditLog", {
+      adminId,
+      action: banned ? "ban_member" : "unban_member",
+      target: member?.name ?? "member",
+      details: `${banned ? "Banned" : "Unbanned"} member ${member?.name}`,
       date: new Date().toISOString(),
     });
   },

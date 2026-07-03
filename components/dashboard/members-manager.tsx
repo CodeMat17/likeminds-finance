@@ -3,7 +3,14 @@
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import {
+  BanIcon,
+  Loader2Icon,
+  PencilIcon,
+  PlusIcon,
+  Trash2Icon,
+  UserCheckIcon,
+} from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,10 +32,12 @@ import type { Doc, Id } from "@/convex/_generated/dataModel";
 export function MembersManager({ adminId }: { adminId: Id<"members"> }) {
   const members = useQuery(api.members.list);
   const remove = useMutation(api.members.remove);
+  const setBanned = useMutation(api.members.setBanned);
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Doc<"members"> | null>(null);
   const [deleting, setDeleting] = useState<Doc<"members"> | null>(null);
+  const [pendingId, setPendingId] = useState<Id<"members"> | null>(null);
 
   if (!members) {
     return <Skeleton className="h-64 w-full" />;
@@ -73,11 +82,44 @@ export function MembersManager({ adminId }: { adminId: Id<"members"> }) {
                   <Badge variant="secondary" className="ml-1">
                     Admin
                   </Badge>
+                )}{" "}
+                {m.banned && (
+                  <Badge variant="destructive" className="ml-1">
+                    Banned
+                  </Badge>
                 )}
               </p>
               <p className="text-xs text-muted-foreground">{m.umunna}</p>
             </div>
             <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                disabled={pendingId === m._id}
+                onClick={async () => {
+                  setPendingId(m._id);
+                  try {
+                    await setBanned({
+                      id: m._id,
+                      banned: !m.banned,
+                      adminId,
+                    });
+                    toast.success(
+                      `${m.name} ${m.banned ? "unbanned" : "banned"}.`
+                    );
+                  } finally {
+                    setPendingId(null);
+                  }
+                }}
+              >
+                {pendingId === m._id ? (
+                  <Loader2Icon className="size-4 animate-spin" />
+                ) : m.banned ? (
+                  <UserCheckIcon className="size-4" />
+                ) : (
+                  <BanIcon className="size-4 text-destructive" />
+                )}
+              </Button>
               <Button
                 variant="ghost"
                 size="icon-sm"
