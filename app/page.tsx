@@ -57,7 +57,7 @@ export default function Home() {
         className="flex flex-col items-center gap-3 text-center"
       >
      
-        <Image alt='logo' priority src='/logo.jpg' width={100} height={100} className="border-4 rounded-full border-emerald-900" />
+        <Image alt='logo' priority src='/logo.png' width={100} height={100} className="border-4 rounded-full border-emerald-900" />
         <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
           LikeMinds Age Grade 80-86
         </h1>

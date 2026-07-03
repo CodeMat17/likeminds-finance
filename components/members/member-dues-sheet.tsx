@@ -85,9 +85,9 @@ export function MemberDuesSheet({
               })}
             </div>
 
-            <Separator />
+            {/* <Separator /> */}
 
-            <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-4">
+            {/* <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-4">
               <p className="text-xs font-semibold text-muted-foreground uppercase">
                 Payment History
               </p>
@@ -120,7 +120,7 @@ export function MemberDuesSheet({
                     </div>
                   </div>
                 ))}
-            </div>
+            </div> */}
           </>
         )}
       </SheetContent>

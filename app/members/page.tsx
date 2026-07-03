@@ -58,7 +58,7 @@ function MembersPageContent() {
       </div>
 
       <Image
-        src="/logo.jpg"
+        src="/logo.png"
         alt="LikeMinds Finance logo"
         width={56}
         height={56}

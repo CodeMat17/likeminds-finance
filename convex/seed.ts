@@ -37,7 +37,6 @@ export const run = mutation({
       role: "member",
     });
 
-    await ctx.db.insert("duesYears", { year: 2023 });
     await ctx.db.insert("duesYears", { year: 2024 });
     await ctx.db.insert("duesYears", { year: 2025 });
     await ctx.db.insert("duesYears", { year: 2026 });
