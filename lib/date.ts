@@ -46,6 +46,11 @@ export function formatDob(dob: string) {
   return `${MONTH_NAMES[month - 1]} ${day}, ${year}`;
 }
 
+export function formatMonthYear(dob: string) {
+  const { year, month } = parseDob(dob);
+  return `${MONTH_NAMES[month - 1]} ${year}`;
+}
+
 export function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-NG", {
     year: "numeric",

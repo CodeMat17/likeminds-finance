@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { MONTH_NAMES, formatDate, formatDob } from "@/lib/date";
+import { MONTH_NAMES, formatDate, formatMonthYear } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import type { Doc } from "@/convex/_generated/dataModel";
 
@@ -53,9 +53,9 @@ export function MemberDuesSheet({
               <SheetDescription>
                 Monthly dues status for {year}
               </SheetDescription>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm font-semibold">
                 Joined:{" "}
-                {member.joinDate ? formatDob(member.joinDate) : "Unknown"}
+                {member.joinDate ? formatMonthYear(member.joinDate) : "Unknown"}
               </p>
             </SheetHeader>
 
