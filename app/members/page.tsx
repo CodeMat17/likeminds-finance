@@ -4,6 +4,7 @@ import Image from "next/image";
 import { RequireSession } from "@/components/require-session";
 import { MembersHeader } from "@/components/members/members-header";
 import { BirthdayBanner } from "@/components/members/birthday-banner";
+import { TotalMembers } from "@/components/members/total-members";
 import { AssociationAccounts } from "@/components/members/association-accounts";
 import { DuesTab } from "@/components/members/dues-tab";
 import { LevyTab } from "@/components/members/levy-tab";
@@ -29,6 +30,7 @@ function MembersPageContent() {
       <BirthdayBanner />
 
       <div className="mx-auto w-full max-w-3xl flex-1 space-y-4 px-4 py-4 sm:px-6">
+        <TotalMembers />
         <AssociationAccounts />
 
         <Tabs defaultValue="dues" className="w-full">
