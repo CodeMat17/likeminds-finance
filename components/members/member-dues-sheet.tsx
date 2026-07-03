@@ -53,13 +53,9 @@ export function MemberDuesSheet({
               <SheetDescription>
                 Monthly dues status for {year}
               </SheetDescription>
-              <p className="text-sm font-semibold">
-                Joined:{" "}
-                {member.joinDate ? formatMonthYear(member.joinDate) : "Unknown"}
-              </p>
             </SheetHeader>
 
-            <div className="grid grid-cols-3 gap-2 px-4">
+            <div className='grid grid-cols-3 gap-2 px-4'>
               {MONTH_NAMES.map((name, idx) => {
                 const month = idx + 1;
                 const record = memberDues.find((d) => d.month === month);
@@ -71,13 +67,12 @@ export function MemberDuesSheet({
                       "flex flex-col items-center gap-1 rounded-lg border p-2 text-xs",
                       paid
                         ? "border-primary/30 bg-primary/10"
-                        : "border-destructive/30 bg-destructive/5"
-                    )}
-                  >
+                        : "border-destructive/30 bg-destructive/5",
+                    )}>
                     {paid ? (
-                      <CheckIcon className="size-4 text-primary" />
+                      <CheckIcon className='size-4 text-primary' />
                     ) : (
-                      <XIcon className="size-4 text-destructive" />
+                      <XIcon className='size-4 text-destructive' />
                     )}
                     <span>{name.slice(0, 3)}</span>
                   </div>
@@ -85,7 +80,14 @@ export function MemberDuesSheet({
               })}
             </div>
 
-            {/* <Separator /> */}
+            <Separator />
+
+            <div className="px-4">
+              <p className='text-sm text-muted-foreground'>
+                Joined:{" "}
+                {member.joinDate ? formatMonthYear(member.joinDate) : "Unknown"}
+              </p>
+            </div>
 
             {/* <div className="flex-1 space-y-2 overflow-y-auto px-4 pb-4">
               <p className="text-xs font-semibold text-muted-foreground uppercase">
