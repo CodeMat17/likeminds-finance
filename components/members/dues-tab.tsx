@@ -27,7 +27,9 @@ function getDueStatus(
     ? member.joinDate.split("-").map(Number)
     : [todayYear, 1];
 
-  // Member hasn't joined yet as of this year, or the year is in the future.
+  // Member hasn't joined yet as of this year, or the year hasn't arrived yet
+  // (dues for a future year, e.g. advance payments, aren't due until that
+  // year's months actually pass).
   if (year < joinYear || year > todayYear) {
     return { dueMonths: 0, unpaidMonths: 0 };
   }
@@ -52,7 +54,9 @@ export function DuesTab() {
   const [search, setSearch] = useState("");
   const [activeMember, setActiveMember] = useState<Doc<"members"> | null>(null);
 
-  const currentYear = year ?? years?.[0] ?? null;
+  const todayYear = new Date().getFullYear();
+  const defaultYear = years?.includes(todayYear) ? todayYear : (years?.[0] ?? null);
+  const currentYear = year ?? defaultYear;
   const dues = useQuery(
     api.dues.getForYear,
     currentYear !== null ? { year: currentYear } : "skip"
@@ -102,6 +106,7 @@ export function DuesTab() {
               ? getDueStatus(member, currentYear, memberDues)
               : { unpaidMonths: 0 };
           const isBehind = unpaidMonths > 0;
+          const isFutureYear = currentYear !== null && currentYear > todayYear;
 
           return (
             <motion.button
@@ -121,9 +126,13 @@ export function DuesTab() {
                   {paidMonths}/12 months paid
                 </p>
               </div>
-              <Badge variant={isBehind ? "destructive" : "default"}>
-                {isBehind ? `${unpaidMonths} behind` : "Up to date"}
-              </Badge>
+              {isFutureYear ? (
+                <Badge variant="secondary">Not due yet</Badge>
+              ) : (
+                <Badge variant={isBehind ? "destructive" : "default"}>
+                  {isBehind ? `${unpaidMonths} behind` : "Up to date"}
+                </Badge>
+              )}
             </motion.button>
           );
         })}
