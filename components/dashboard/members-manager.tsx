@@ -8,6 +8,7 @@ import {
   Loader2Icon,
   PencilIcon,
   PlusIcon,
+  ShieldAlertIcon,
   Trash2Icon,
   UserCheckIcon,
 } from "lucide-react";
@@ -37,6 +38,7 @@ export function MembersManager({ adminId }: { adminId: Id<"members"> }) {
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Doc<"members"> | null>(null);
   const [deleting, setDeleting] = useState<Doc<"members"> | null>(null);
+  const [banning, setBanning] = useState<Doc<"members"> | null>(null);
   const [pendingId, setPendingId] = useState<Id<"members"> | null>(null);
 
   if (!members) {
@@ -96,21 +98,7 @@ export function MembersManager({ adminId }: { adminId: Id<"members"> }) {
                 variant="ghost"
                 size="icon-sm"
                 disabled={pendingId === m._id}
-                onClick={async () => {
-                  setPendingId(m._id);
-                  try {
-                    await setBanned({
-                      id: m._id,
-                      banned: !m.banned,
-                      adminId,
-                    });
-                    toast.success(
-                      `${m.name} ${m.banned ? "unbanned" : "banned"}.`
-                    );
-                  } finally {
-                    setPendingId(null);
-                  }
-                }}
+                onClick={() => setBanning(m)}
               >
                 {pendingId === m._id ? (
                   <Loader2Icon className="size-4 animate-spin" />
@@ -152,14 +140,20 @@ export function MembersManager({ adminId }: { adminId: Id<"members"> }) {
       <AlertDialog open={!!deleting} onOpenChange={(o) => !o && setDeleting(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete {deleting?.name}?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-destructive/10">
+              <Trash2Icon className="size-6 text-destructive" />
+            </div>
+            <AlertDialogTitle className="text-center">
+              Delete {deleting?.name}?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
               This permanently removes the member and cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={async () => {
                 if (!deleting) return;
                 await remove({ id: deleting._id, adminId });
@@ -168,6 +162,61 @@ export function MembersManager({ adminId }: { adminId: Id<"members"> }) {
               }}
             >
               Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={!!banning} onOpenChange={(o) => !o && setBanning(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div
+              className={`mx-auto flex size-12 items-center justify-center rounded-full ${
+                banning?.banned ? "bg-emerald-500/10" : "bg-destructive/10"
+              }`}
+            >
+              {banning?.banned ? (
+                <UserCheckIcon className="size-6 text-emerald-600" />
+              ) : (
+                <ShieldAlertIcon className="size-6 text-destructive" />
+              )}
+            </div>
+            <AlertDialogTitle className="text-center">
+              {banning?.banned ? "Unban" : "Ban"} {banning?.name}?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              {banning?.banned
+                ? "This restores their access and removes the banned status."
+                : "This member will be marked as banned and lose access."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className={
+                banning?.banned
+                  ? ""
+                  : "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              }
+              onClick={async () => {
+                if (!banning) return;
+                setPendingId(banning._id);
+                try {
+                  await setBanned({
+                    id: banning._id,
+                    banned: !banning.banned,
+                    adminId,
+                  });
+                  toast.success(
+                    `${banning.name} ${banning.banned ? "unbanned" : "banned"}.`
+                  );
+                } finally {
+                  setPendingId(null);
+                  setBanning(null);
+                }
+              }}
+            >
+              {banning?.banned ? "Unban" : "Ban"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
